@@ -2,17 +2,18 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace employee.Logic
 {
-    internal class Database
+    public class Database
     {
         public static bool SaveEmployees(List<Employee> employees)
         {
-           
+
             bool ret = false;
             string constr = "server=localhost;user=root;database=hrapp;port=3306";
 
@@ -65,24 +66,30 @@ namespace employee.Logic
                     foreach (var employee in employees)
                     {
                         string cmdtext = "INSERT INTO `employee`(`first_name`, `last_name`) VALUES (@firstname, @lastname )";
+
                         MySqlCommand cmd = new MySqlCommand(cmdtext, connection);
                         cmd.Parameters.AddWithValue("@firstname", employee.FirstName);
                         cmd.Parameters.AddWithValue("@lastname", employee.LastName);
-                        var employeeId = cmd.ExecuteScalar();
+                        cmd.ExecuteNonQuery();
+                        cmd.CommandText = "SELECT LAST_INSERT_ID();";
+                        var employeeId = Convert.ToInt32(cmd.ExecuteScalar());
 
-                        string departmentIdCmdText = "SELECT `department_id` FROM `department` WHERE `name` = @name";
-                        MySqlCommand departmentIdCmd = new MySqlCommand(departmentIdCmdText, connection);
-                        departmentIdCmd.Parameters.AddWithValue("@name", employee.Department);
-                        var departmentId = departmentIdCmd.ExecuteScalar();
 
                         string jobTitleIdCmdText = "SELECT `job_title_id` FROM `job_title` WHERE `title` = @name";
                         MySqlCommand jobtitle = new MySqlCommand(jobTitleIdCmdText, connection);
                         jobtitle.Parameters.AddWithValue("@name", employee.JobTitle);
                         var jobTitleId = jobtitle.ExecuteScalar();
 
-                        string cmdtext2 = "INSERT INTO `employment`(`employee_id`, `department_id`, `job_title_id`, `grosswage`, `netwage`, `begindate`, `enddate`) VALUES (@employeeid, @departmentid, @jobtitleid, @grosswage, @netwage, @begindate, @enddate)";
+
+                        string cmdtext2 = "INSERT INTO `employment`(`employee_id`, `job_title_id`, `gross_wage`, `net_wage`, `begin_date`, `end_date`) VALUES (@employeeid, @jobtitleid, @grosswage, @netwage, @begindate, @enddate)";
                         MySqlCommand cmd2 = new MySqlCommand(cmdtext2, connection);
                         cmd2.Parameters.AddWithValue("@employeeid", employeeId);
+                        cmd2.Parameters.AddWithValue("@jobtitleid", jobTitleId);
+                        cmd2.Parameters.AddWithValue("@grosswage", employee.GrossWage);
+                        cmd2.Parameters.AddWithValue("@netwage", employee.NetWage);
+                        cmd2.Parameters.AddWithValue("@begindate", employee.BeginDate);
+                        cmd2.Parameters.AddWithValue("@enddate", employee.EndDate);
+                        cmd2.ExecuteNonQuery();
                     }
                 }
                 ret = true;
@@ -94,6 +101,44 @@ namespace employee.Logic
             }
             return ret;
         }
+        public static List<Employee> LoadEmployees()
+        {
+            List<Employee> ret = new List<Employee>();
+            string constr = "server=localhost;user=root;database=hrapp;port=3306";
 
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(constr))
+                {
+                    conn.Open();
+                    string command = "SELECT * FROM employment_full;";
+                    MySqlCommand cmd = new MySqlCommand(command, conn);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Employee employee = new Employee
+                        (
+                            firstname: reader.GetString("first_name"),
+                            lastname: reader.GetString("last_name"),
+                            grossWage: reader.GetDecimal("gross_wage"),
+                            netWage: reader.GetDecimal("net_wage"),
+                            JobTitle: reader.GetString("job_title"),
+                            jobDepartment: reader.GetString("department"),
+                            beginDate: reader.GetDateTime("begin_date"),
+                            endDate: reader.IsDBNull("end_date") ? (DateTime?)null : (DateTime?)reader.GetDateTime("end_date")
+                        );
+                            
+                        ret.Add(employee);
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            return ret;
+        }
     }
 }

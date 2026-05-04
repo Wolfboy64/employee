@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace employee.Model
 {
-    internal class EmployeeList : List<Employee>
+    public class EmployeeList : List<Employee>
     {
         public string[] ColumnNames;
     }

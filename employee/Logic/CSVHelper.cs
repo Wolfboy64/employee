@@ -8,9 +8,9 @@ using System.IO;
 
 namespace employee.Logic
 {
-    internal class CSVHelper
+    public class CSVHelper
     {
-        internal static List<Employee> GetDataFromCSV(string path)
+        public static List<Employee> GetDataFromCSV(string path)
         {
             var ret = new EmployeeList();
             if (File.Exists(path)) 

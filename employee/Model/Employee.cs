@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace employee.Model
 {
-    internal class Employee
+    public class Employee
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -15,9 +15,9 @@ namespace employee.Model
         public string JobTitle { get; set; }
         public string Department { get; set; }
         public DateTime BeginDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
-        public Employee(string firstname, string lastname, decimal grossWage, decimal netWage, string JobTitle, string jobDepartment, DateTime beginDate, DateTime endDate)
+        public Employee(string firstname, string lastname, decimal grossWage, decimal netWage, string JobTitle, string jobDepartment, DateTime beginDate, DateTime? endDate)
         {
             this.FirstName = firstname;
             this.LastName = lastname;
@@ -58,7 +58,7 @@ namespace employee.Model
         }
         public override string ToString()
         {
-            return $"{FirstName} | {LastName} | {GrossWage} | {NetWage} | {JobTitle} | {Department} | {BeginDate.ToString("yyyy-MM-dd")} |{EndDate.ToString("yyyy-MM-dd")}";
+            return $"{FirstName} | {LastName} | {GrossWage} | {NetWage} | {JobTitle} | {Department} | {BeginDate.ToString("yyyy-MM-dd")} |{(EndDate.HasValue ? EndDate.Value.ToString("yyyy-MM-dd") : "N/A")}";
         }
     }
 }
