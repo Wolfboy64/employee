@@ -1,0 +1,16 @@
+- Bemásolom a csv-t -> include in project -> copy always
+- Készítünk egy model osztályt a CSV alapján. ./Model/Employee.cs
+	- Egyszerű konstruktort fejlesztünk ami a CSV sorból (string mezőkből típusos mezőket konvertál és feltölti az abjektumot)
+- CsvHelper osztály, amiben implementáljuk a felolvasó kódot -> Visszatérünk egy Employee listával
+- Meghívjuk a Mainről a CSVHelper felolvasó metódusát
+- Készítünk egy Database.cs osztályt, amiben egy List<Employee> elmentjük adatbázisba
+	- Telepítjük a nuget mysql.data csomagot 
+- elkészítjük a create scriptet a MySQL adatbázishoz
+
+
+
+
+- department id kikeresése: 
+	- keresni kell egy olyan employee-t akinek a job je megegyezik az elmenteni kívánt jobtile-l
+	- az employee-nak a department neve alapján kikell szedni a department táblából a department id-t
+	- ezt az id-t kell beírni a job title insertbe
