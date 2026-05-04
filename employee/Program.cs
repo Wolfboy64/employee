@@ -14,7 +14,8 @@ internal class Program
     {
         foreach (var emp in empss)
         {
-            Console.WriteLine($"Name: {emp.FirstName} {emp.LastName}, Gross Wage: {emp.GrossWage}, Net Wage: {emp.NetWage}, Job Title: {emp.JobTitle}, Department: {emp.Department}, Begin Date: {emp.BeginDate.ToShortDateString()}, End Date: {emp.EndDate.ToShortDateString()}");
+            Console.WriteLine($"Name: {emp.FirstName} {emp.LastName}, Gross Wage: {emp.GrossWage}, Net Wage: {emp.NetWage}, Job Title: {emp.JobTitle}, Department: {emp.Department}, Begin Date: {emp.BeginDate.ToString("yyyy-MM-dd")}, " +
+                $"End Date: {(emp.EndDate.HasValue ? emp.EndDate.Value.ToShortDateString() : "N/A")}");
         }
     }
     private static void Feladat1() 

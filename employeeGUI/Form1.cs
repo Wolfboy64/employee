@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using employee.Logic;
 
 
 namespace employeeGUI
@@ -20,7 +21,7 @@ namespace employeeGUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            dataGridView1.DataSource = Database.LoadEmployees();
         }
     }
 }
