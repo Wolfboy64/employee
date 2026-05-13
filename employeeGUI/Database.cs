@@ -11,11 +11,12 @@ namespace employee.Logic
 {
     public class Database
     {
+        public static string constr = "server=localhost;user=root;database=hrapp;port=3306";
         public static bool SaveEmployees(List<Employee> employees)
         {
 
             bool ret = false;
-            string constr = "server=localhost;user=root;database=hrapp;port=3306";
+            
 
             try
             {
@@ -104,7 +105,7 @@ namespace employee.Logic
         public static List<Employee> LoadEmployees()
         {
             List<Employee> ret = new List<Employee>();
-            string constr = "server=localhost;user=root;database=hrapp;port=3306";
+
 
             try
             {
@@ -119,6 +120,7 @@ namespace employee.Logic
                         
                         Employee employee = new Employee
                         (
+                            id: reader.GetInt32("employee_id"),
                             firstname: reader.GetString("first_name"),
                             lastname: reader.GetString("last_name"),
                             grossWage: reader.GetDecimal("gross_wage"),
@@ -140,6 +142,29 @@ namespace employee.Logic
                 throw;
             }
             return ret;
+        }
+        public static bool FelSyncEmps()
+        { 
+            bool ret = false;
+            
+            using (var connection = new MySqlConnection(constr))
+            {
+                try
+                {
+                    connection.Open();
+                    string cmdtext = "UDATE";
+                    MySqlCommand cmd = new MySqlCommand(cmdtext, connection);
+                    cmd.ExecuteNonQuery();
+                    ret = true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    ret = false;
+                }
+            }
+
+            return ret; 
         }
     }
 }

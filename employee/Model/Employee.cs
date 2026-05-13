@@ -8,6 +8,7 @@ namespace employee.Model
 {
     public class Employee
     {
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public decimal GrossWage { get; set; }
@@ -17,8 +18,9 @@ namespace employee.Model
         public DateTime BeginDate { get; set; }
         public DateTime? EndDate { get; set; }
 
-        public Employee(string firstname, string lastname, decimal grossWage, decimal netWage, string JobTitle, string jobDepartment, DateTime beginDate, DateTime? endDate)
+        public Employee(int id, string firstname, string lastname, decimal grossWage, decimal netWage, string JobTitle, string jobDepartment, DateTime beginDate, DateTime? endDate)
         {
+
             this.FirstName = firstname;
             this.LastName = lastname;
             this.GrossWage = grossWage;
@@ -29,8 +31,9 @@ namespace employee.Model
             this.EndDate = endDate;
         }
 
-        public Employee(string firstname, string lastname, string grossWage, string netWage, string JobTitle, string jobDepartment, string beginDate, string endDate)
+        public Employee(int id, string firstname, string lastname, string grossWage, string netWage, string JobTitle, string jobDepartment, string beginDate, string endDate)
         {
+
             this.FirstName = firstname;
             this.LastName = lastname;
             decimal gWage;
@@ -38,10 +41,18 @@ namespace employee.Model
             {
                 this.GrossWage = gWage;
             }
+            else
+            {
+                throw new ArgumentException("Invalid gross wage format.");
+            }
             decimal nWage;
             if (decimal.TryParse(netWage, out nWage))
             {
                 this.NetWage = nWage;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid net wage format.");
             }
             this.JobTitle = JobTitle;
             this.Department = jobDepartment;
@@ -50,10 +61,18 @@ namespace employee.Model
             {
                 this.BeginDate = bDate;
             }
+            else
+            {
+                throw new ArgumentException("Invalid begin date format.");
+            }
             DateTime eDate;
             if (DateTime.TryParse(endDate, out eDate))
             {
                 this.EndDate = eDate;
+            }
+            else
+            {
+                this.EndDate = null; // Set to null if end date is not provided or invalid
             }
         }
         public override string ToString()

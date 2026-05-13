@@ -8,6 +8,7 @@ namespace employee.Model
 {
     public class Employee
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public decimal GrossWage { get; set; }
@@ -17,8 +18,9 @@ namespace employee.Model
         public DateTime BeginDate { get; set; }
         public DateTime? EndDate { get; set; }
 
-        public Employee(string firstname, string lastname, decimal grossWage, decimal netWage, string JobTitle, string jobDepartment, DateTime beginDate, DateTime? endDate)
+        public Employee(int id, string firstname, string lastname, decimal grossWage, decimal netWage, string JobTitle, string jobDepartment, DateTime beginDate, DateTime? endDate)
         {
+            this.Id = id;
             this.FirstName = firstname;
             this.LastName = lastname;
             this.GrossWage = grossWage;
@@ -29,8 +31,9 @@ namespace employee.Model
             this.EndDate = endDate;
         }
 
-        public Employee(string firstname, string lastname, string grossWage, string netWage, string JobTitle, string jobDepartment, string beginDate, string endDate)
+        public Employee(int id, string firstname, string lastname, string grossWage, string netWage, string JobTitle, string jobDepartment, string beginDate, string endDate)
         {
+            this.Id = id;
             this.FirstName = firstname;
             this.LastName = lastname;
             decimal gWage;
